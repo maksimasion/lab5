@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <fstream> 
 #include <cmath>
 #include <cstring>
@@ -105,6 +105,22 @@ int main()
 		cout << "Znachenie integrala methodom Simpsona:" << zS << endl;
 		//fout1 << "Znachenie integrala methodom Simpsona:" << zS << endl<<endl<<endl;
 		cout << "______________________" << endl << endl;
+
+		//Метод прямоуглоьника
+		std::ofstream fout2;
+		fout2.open("ans3.dat");
+		cout << "Metod priamoygolnikov:" << endl;
+		//fout2 << "Metod priamoygolnikov:" << endl;
+		cout << "Shag:" << shag << endl;
+		double zT = 0;
+		for (int i = 2; i <= iter; i=i+2) {
+			zT += (x1[i] - x1[i - 2])*y1[i - 1];
+
+		}
+		cout << "Znachenie integrala methodom priamoygolnikov:" << zT << endl;
+		//fout2 << "Znachenie integrala methodom priamoygolnikov:" << zS << endl<<endl<<endl;
+		cout << "______________________" << endl << endl;
+
 		//Точность вычисления метода трапеции
 
 		cout << "Tochnost vichislenia metoda trapeci:" << endl;
@@ -226,6 +242,63 @@ int main()
 		fout1 << zS <<" " << pogresh1 << endl;
 		//fout1 << "Tochnost vicheslenia (method Simpsona):" << pogresh1 << endl;
 		cout << "Iteration tochnosti (method Simpsona):" << iter2 << endl;
+		cout << "______________________" << endl << endl;
+
+		//Точность вычисления метода priamoygolnika
+
+		cout << "Tochnost vichislenia metoda priamoygolnika:" << endl;
+		int iter3 = 0;
+		K = 10;
+		long double pogresh2;
+		for (int j = 0; j < 1; j) {
+			K = 2 * K;
+			cout << "K=" << K << endl;
+			iter3++;
+			int iter = 0;
+			double *x1 = new double[(N - 1) * K + N];
+			for (int i = 0; i < ((N - 1) * K + N); i++) {
+				x1[i] = a + (i * h) / (K + 1);
+				iter = i;
+			}
+			cout << "Iteration:" << iter << endl;
+
+			double *y1 = CubicInterpolation(x, y, x1);
+			for (int i = 1; i < (N - 1) * K + N; i++) {
+				if (i == k * (K + N)) {
+					k++;
+				}
+				else {
+					//	cout << x1[i] << " " << y1[i] << endl;
+				}
+			}
+			//cout << "Metod priamoygolnika:" << endl;
+			long double shag;
+			shag = x1[2] - x1[1];
+			cout << "Shag:" << shag << endl;
+			long double zT1 = 0;
+			for (int i = 2; i <= iter; i = i + 2) {
+				zT1 += (x1[i] - x1[i - 2])*y1[i - 1];
+
+			}
+			//cout << "Second znachenie integrala methodom priamoygolnika:" << zS1 << endl << endl;
+			pogresh2 = 0;
+			pogresh2 = abs(zT - zT1);
+			//cout << "Tochnost visheslenia:" << pogresh<< endl;
+			j = 1;
+			if (pogresh1 > 0.000001) {
+				j = 0;
+			}
+			zT = zT1;
+			//cout << "Iteration tochnosti:" << iter1 << endl;
+			cout << endl;
+
+		}
+
+		cout << "Second znachenie integrala methodom priamoygolnika:" << zT << endl;
+		cout << "Tochnost vicheslenia (metodom priamoygolnika):" << pogresh2 << endl;
+		fout2 << zT << " " << pogresh2 << endl;
+		//fout2 << "Tochnost vicheslenia (method priamoygolnika):" << pogresh1 << endl;
+		cout << "Iteration tochnosti (method priamoygolnika):" << iter3 << endl;
 }
 
 double *CubicInterpolation(double *src_x, double *src_y, double *new_x) { // src_x - начальные х, src_y - начальные у, new_x - новые х для нахождения у
